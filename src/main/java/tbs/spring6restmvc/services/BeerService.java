@@ -1,4 +1,4 @@
-package tbs.spring6restmvc.service;
+package tbs.spring6restmvc.services;
 
 import tbs.spring6restmvc.model.Beer;
 
