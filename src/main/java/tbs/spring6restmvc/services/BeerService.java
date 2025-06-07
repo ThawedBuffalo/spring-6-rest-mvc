@@ -2,8 +2,11 @@ package tbs.spring6restmvc.services;
 
 import tbs.spring6restmvc.model.Beer;
 
+import java.util.List;
 import java.util.UUID;
 
 public interface BeerService {
+    List<Beer> listBeers();
+
     Beer getBeerById(UUID id);
 }
