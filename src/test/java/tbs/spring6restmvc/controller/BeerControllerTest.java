@@ -20,7 +20,7 @@ class BeerControllerTest {
     @Autowired
     MockMvc mockMvc;
 
-    @MockitoBean(types = {BeerService.class})
+    @MockitoBean()
     BeerService beerService;
 
     @Test
