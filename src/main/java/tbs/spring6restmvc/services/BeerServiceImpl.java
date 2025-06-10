@@ -14,7 +14,7 @@ import java.util.*;
 @Service
 public class BeerServiceImpl implements BeerService {
 
-    private Map<UUID, Beer> beerMap;
+    private final Map<UUID, Beer> beerMap;
 
     public BeerServiceImpl() {
         this.beerMap = new HashMap<>();
@@ -66,11 +66,11 @@ public class BeerServiceImpl implements BeerService {
     }
 
     @Override
-    public Beer getBeerById(UUID id) {
+    public Optional<Beer> getBeerById(UUID id) {
 
         log.debug("Get Beer ID - in service. ID: " + id.toString());
 
-        return beerMap.get(id);
+        return Optional.of(beerMap.get(id));
     }
 
     @Override

@@ -129,7 +129,7 @@ class BeerControllerTest {
     @Test
     void testGetBeerByIdNotFound() throws Exception {
 
-        given(beerService.getBeerById(any(UUID.class))).willThrow(NotFoundException.class);
+        given(beerService.getBeerById(any(UUID.class))).willReturn(Optional.empty());
 
         mockMvc.perform(get(BeerController.BEER_PATH_ID, UUID.randomUUID()))
                 .andExpect(status().isNotFound());
@@ -139,7 +139,7 @@ class BeerControllerTest {
     void testGetBeerById() throws Exception {
         Beer testBeer = beerServiceImpl.listBeers().getFirst();
 
-        given(beerService.getBeerById(testBeer.getId())).willReturn(testBeer);
+        given(beerService.getBeerById(testBeer.getId())).willReturn(Optional.of(testBeer));
 
         mockMvc.perform(get("/api/v1/beer/" + testBeer.getId())
                 .accept(MediaType.APPLICATION_JSON))
