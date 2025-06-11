@@ -1,12 +1,12 @@
 package tbs.spring6restmvc.controller;
 
-import guru.springframework.spring6restmvc.model.CustomerDTO;
-import guru.springframework.spring6restmvc.services.CustomerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import tbs.spring6restmvc.model.CustomerDTO;
+import tbs.spring6restmvc.services.CustomerService;
 
 import java.util.List;
 import java.util.UUID;
