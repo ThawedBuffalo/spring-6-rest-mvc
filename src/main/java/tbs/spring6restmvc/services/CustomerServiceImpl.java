@@ -1,5 +1,6 @@
 package tbs.spring6restmvc.services;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import tbs.spring6restmvc.model.CustomerDTO;
@@ -7,6 +8,7 @@ import tbs.spring6restmvc.model.CustomerDTO;
 import java.time.LocalDateTime;
 import java.util.*;
 
+@Slf4j
 @Service
 public class CustomerServiceImpl implements CustomerService {
 
