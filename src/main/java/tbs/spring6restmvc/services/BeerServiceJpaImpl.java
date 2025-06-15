@@ -10,6 +10,7 @@ import tbs.spring6restmvc.repositories.BeerRepository;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 @Service
@@ -40,14 +41,21 @@ public class BeerServiceJpaImpl implements BeerService {
     }
 
     @Override
-    public void updateBeerById(UUID beerId, BeerDTO beerDTO) {
-        beerRepository.findById(beerId).ifPresent(foundBeer -> {
+    public Optional<BeerDTO> updateBeerById(UUID beerId, BeerDTO beerDTO) {
+        AtomicReference<Optional<BeerDTO>> beerDTORef = new AtomicReference<>();
+
+        beerRepository.findById(beerId).ifPresentOrElse(foundBeer -> {
             foundBeer.setBeerName(beerDTO.getBeerName());
             foundBeer.setPrice(beerDTO.getPrice());
             foundBeer.setBeerStyle(beerDTO.getBeerStyle());
             foundBeer.setUpc(beerDTO.getUpc());
-            beerRepository.save(foundBeer);
+            beerDTORef.set(Optional.of(beerMapper
+                    .beerToBeerDto(beerRepository.save(foundBeer))));
+        }, () -> {
+            beerDTORef.set(Optional.empty());
         });
+
+        return beerDTORef.get();
     }
 
     @Override

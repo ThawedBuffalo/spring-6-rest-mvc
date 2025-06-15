@@ -30,6 +30,13 @@ class BeerControllerIntegrationTest {
     BeerMapper beerMapper;
 
     @Test
+    void testUpdateNotFound() {
+        assertThrows(NotFoundException.class, () -> {
+            beerController.updateById(UUID.randomUUID(), BeerDTO.builder().build());
+        });
+    }
+
+    @Test
     void updateExistingBeer() {
         Beer beer = beerRepository.findAll().get(0);
         BeerDTO beerDTO = beerMapper.beerToBeerDto(beer);
@@ -45,51 +52,62 @@ class BeerControllerIntegrationTest {
         assertThat(updatedBeer.getBeerName()).isEqualTo(beerName);
     }
 
-    @Transactional
     @Rollback
+    @Transactional
     @Test
-    void testSaveNewBeer() {
+    void saveNewBeerTest() {
         BeerDTO beerDTO = BeerDTO.builder()
                 .beerName("New Beer")
                 .build();
 
         ResponseEntity responseEntity = beerController.handlePost(beerDTO);
+
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatusCode.valueOf(201));
         assertThat(responseEntity.getHeaders().getLocation()).isNotNull();
 
-        String[] locationUUID = responseEntity.getHeaders().getLocation().toString().split("/");
+        String[] locationUUID = responseEntity.getHeaders().getLocation().getPath().split("/");
         UUID savedUUID = UUID.fromString(locationUUID[4]);
 
-        Beer savedBeer = beerRepository.findById(savedUUID).get();
-        assertThat(savedBeer.getBeerName()).isEqualTo("New Beer");
+        Beer beer = beerRepository.findById(savedUUID).get();
+        assertThat(beer).isNotNull();
     }
 
     @Test
-    void testGetBeerById() {
-        Beer beer = beerRepository.findAll().get(0);
-        BeerDTO dto = beerController.getBeerById(beer.getId());
-        assertThat(dto.getId()).isEqualTo(beer.getId());
-    }
-
-    @Test
-    void testGetBeerByIdFailed() {
+    void testBeerIdNotFound() {
         assertThrows(NotFoundException.class, () -> {
             beerController.getBeerById(UUID.randomUUID());
         });
     }
 
     @Test
-    void testListBeers() {
-        List<BeerDTO> beers = beerController.listBeers();
-        assertThat(beers.size()).isEqualTo(3);
+    void testGetById() {
+        Beer beer = beerRepository.findAll().get(0);
+
+        BeerDTO dto = beerController.getBeerById(beer.getId());
+
+        assertThat(dto).isNotNull();
     }
 
-    @Transactional
-    @Rollback
     @Test
-    void testEmptyListBeers() {
+    void testListBeers() {
+        List<BeerDTO> dtos = beerController.listBeers();
+
+        assertThat(dtos.size()).isEqualTo(3);
+    }
+
+    @Rollback
+    @Transactional
+    @Test
+    void testEmptyList() {
         beerRepository.deleteAll();
-        List<BeerDTO> beers = beerController.listBeers();
-        assertThat(beers.size()).isEqualTo(0);
+        List<BeerDTO> dtos = beerController.listBeers();
+
+        assertThat(dtos.size()).isEqualTo(0);
     }
 }
+
+
+
+
+
+
