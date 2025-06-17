@@ -1,9 +1,13 @@
 package tbs.spring6restmvc.repositories;
 
+import org.assertj.core.api.BigDecimalAssert;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import tbs.spring6restmvc.entities.Beer;
+import tbs.spring6restmvc.model.BeerStyle;
+
+import java.math.BigDecimal;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -17,7 +21,13 @@ class BeerRepositoryTest {
     @Test
     void testSavedBeer() {
         Beer savedBeer = beerRepository.save(Beer.builder()
-                .beerName("Test Beer").build());
+                .beerName("Test Beer")
+                .beerStyle(BeerStyle.IPA)
+                .upc("2345656")
+                .price(new BigDecimal("11.99"))
+                .build());
+
+        beerRepository.flush();
 
         assertThat(savedBeer).isNotNull();
         assertThat(savedBeer.getId()).isNotNull();
