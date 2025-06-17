@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import tbs.spring6restmvc.model.BeerDTO;
 import tbs.spring6restmvc.services.BeerService;
@@ -48,7 +49,7 @@ public class BeerController {
 
 
     @PostMapping(BEER_PATH)
-    public ResponseEntity handlePost(@RequestBody BeerDTO beerDTO) {
+    public ResponseEntity handlePost(@Validated @RequestBody BeerDTO beerDTO) {
         BeerDTO savedBeerDTO = beerService.saveNewBeer(beerDTO);
         HttpHeaders headers = new HttpHeaders();
         headers.add("Location", BEER_PATH + "/" + savedBeerDTO.getId());
