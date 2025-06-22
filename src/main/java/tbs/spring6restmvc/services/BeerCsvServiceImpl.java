@@ -6,7 +6,6 @@ import tbs.spring6restmvc.model.BeerCSVRecord;
 
 import java.io.File;
 import java.io.FileReader;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
