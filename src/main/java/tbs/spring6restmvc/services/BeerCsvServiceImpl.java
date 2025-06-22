@@ -1,6 +1,7 @@
 package tbs.spring6restmvc.services;
 
 import com.opencsv.bean.CsvToBeanBuilder;
+import org.springframework.stereotype.Service;
 import tbs.spring6restmvc.model.BeerCSVRecord;
 
 import java.io.File;
@@ -8,6 +9,7 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class BeerCsvServiceImpl implements BeerCsvService {
 
     @Override
